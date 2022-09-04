@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, CreateView, DetailView
+    ListView, CreateView, DetailView, UpdateView
 )
 
 from .models import Room
@@ -31,3 +32,10 @@ class RoomCreateView(CreateView):
 class RoomDetailView(DetailView):
     model = Room
     template_name = 'room/room_detail.html'
+
+
+class RoomUpdateView(UpdateView):
+    model = Room
+    template_name = 'room/room_update.html'
+    form_class = RoomCreationForm
+    success_url = reverse_lazy('room:index')
