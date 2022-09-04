@@ -27,14 +27,14 @@ class UserCreationForm(forms.ModelForm):
         user.set_password(self.cleaned_data.get('password'))
         user.save()
         return user
-        
+
 
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'is_staff', 'is_active', )
+        fields = ('username', 'email', 'password', 'is_staff', 'is_active', 'is_superuser' )
 
     def clean_password(self):
         return self.initial['password']
