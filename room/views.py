@@ -25,4 +25,4 @@ class RoomCreateView(CreateView):
             room.save()
             return redirect('room:index')
 
-        return render(request, self.template_name, {'form': room})
+        return render(request, 'room/room_create.html', {form: form})
