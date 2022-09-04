@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import (
-    ListView, CreateView
+    ListView, CreateView, DetailView
 )
 
 from .models import Room
@@ -26,3 +26,8 @@ class RoomCreateView(CreateView):
             return redirect('room:index')
 
         return render(request, 'room/room_create.html', {form: form})
+
+
+class RoomUpdateView(DetailView):
+    model = Room
+    template_name = 'room/room_detail.html'
