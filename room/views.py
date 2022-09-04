@@ -28,6 +28,6 @@ class RoomCreateView(CreateView):
         return render(request, 'room/room_create.html', {form: form})
 
 
-class RoomUpdateView(DetailView):
+class RoomDetailView(DetailView):
     model = Room
     template_name = 'room/room_detail.html'
