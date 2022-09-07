@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns mt-3">
+    <div class="column is-one-quarter">
+        {% include 'room/languages.html' %}
+    </div>
+    <div class="column is-half">
+        <a class="is-size-3" href="">ホスト: @{{ room.host }}</a>
+        <h2 class="is-size-2">{{ room.name }}</h2>
+        <h4 class="is-size-4">{{ room.description }}</h4>
+        <p class="mt-4">{{ room.created_at }}</p>
+        <hr>
+        {% if room_messages.count == 0 %}
+            <h4 class="is-size-4 mb-6">まだメッセージはありません</h4>
+        {% else %} 
+            <div class="msg">
+                {% for message in room_messages %}
+                    <a href="" class="is-size-5">@{{ message.user }}</a>
+                    <article class="message is-dark">
+                        <div class="message-body">
+                            <h5 class="is-size-5">
+                                {{ message }}
+                            </h5>
+                            <p class="mt-4">{{ message.created_at }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="mt-5">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.body }}
+            </form>
+        </div>
+    </div>
+    <div class="column is-one-quarter">
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered mt-3 form-container">
+    <div class="column is-half has-background-link-light">
+        <form method='POST'>
+            {% csrf_token %}
+            {% include 'room/form.html' %}
+            <input class="button is-primary" type="submit" value="作成">
+            <a class="button is-info ml-3" href="{{ request.META.HTTP_REFERER }}">戻る</a>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

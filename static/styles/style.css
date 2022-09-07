@@ -1,0 +1,13 @@
+/* room_detail.htmlのスクロール */
+
+.msg {
+    height: 340px;
+    overflow: auto;
+}
+
+/* room_index.htmlのスクロール */
+
+.room-container {
+    height: 700px;
+    overflow: auto;
+}

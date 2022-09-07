@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered mt-5">
+    <div class="column is-two-fifths">
+        <article class="message is-warning">
+            <div class="message-header">
+                <p>注意</p>
+            </div>
+            <div class="message-body">
+                本当に"{{ object }}"を削除しますか
+            </div>
+        </article>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input class="button is-danger" type="submit" value="削除">
+            <a class="button is-info" href="{{ request.META.HTTP_REFERER }}">戻る</a>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

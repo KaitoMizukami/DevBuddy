@@ -1,0 +1,28 @@
+<header>
+    <nav class="navbar is-link">
+        <div class="navbar-brand">
+            <a href="{% url 'room:index' %}" class="navbar-item is-size-3 ml-4">
+                DevBuddy
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item">
+                    <a href="{% url 'room:create' %}" class="has-text-white">ルーム作成</a>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary mr-5">
+                            <strong>新規登録</strong>
+                        </a>
+                        <a class="button is-light mr-5">
+                            ログイン
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

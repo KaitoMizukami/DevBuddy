@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns mt-3">
+    <div class="column is-one-quarter">
+        {% include 'room/languages.html' %}
+    </div>
+    <div class="column is-half">
+        <form method="GET" action="{% url 'room:index' %}">
+            <div class="level mb-5">
+                <div class="level-item">
+                    <p class="control">
+                        <input class="input is-primary" name="query" type="text" placeholder="キーワード検索">
+                    </p>
+                    <p class="control">
+                        <button class="button is-primary is-outlined ml-3">
+                            検索
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </form>
+        <h3 class="is-size-4 mb-4"><span class="has-text-primary">{{ room_count }}</span> 件</h3>
+        <div class="room-container">
+            {% for room in object_list %}
+                <div class="card mb-5 has-background-white-ter">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            {{ room.name }}
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            <div class="mb-3">
+                                @{{ room.host }}
+                            </div>
+                            {{ room.description }}
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="{% url 'room:detail' room.id %}" class="card-footer-item">詳細</a>
+                        {% if request.user ==  room.host %}
+                            <a href="{% url 'room:update' room.id %}" class="card-footer-item">編集</a>
+                            <a href="{% url 'room:delete' room.id %}" class="card-footer-item">削除</a>
+                        {% endif %}
+                    </footer>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="column is-one-quarter">
+        <h3 class="is-size-3">最近のメッセージ</h3>
+        <hr>
+        {% for recent_msg in three_recent_msgs %}
+            <a href="#" class="is-size-5">
+                @{{ recent_msg.user }}
+            </a>
+            <article class="message is-info">
+                <div class="message-header">
+                    <a href="{% url 'room:detail' recent_msg.room.id %}" class="recent-msg-a">
+                        {{ recent_msg.room }}
+                    </a>
+                </div>
+                <div class="message-body">
+                    {{ recent_msg.body }}
+                </div>
+              </article>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}

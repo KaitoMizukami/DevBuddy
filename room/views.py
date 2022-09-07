@@ -1,16 +1,40 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, CreateView, DetailView, UpdateView, DeleteView
+    ListView, CreateView, UpdateView, DeleteView
 )
+from django.db.models import Q
 
-from .models import Room
-from .forms import RoomCreationForm
+from .models import Room, Language, Message
+from .forms import RoomCreationForm, MessageForm
 
 
 class RoomIndexView(ListView):
     template_name = 'room/room_index.html'
     model = Room
+
+    def get_queryset(self):
+        query_word = self.request.GET.get('query')
+        if query_word:
+            object_list = Room.objects.filter(
+                Q(language__name__icontains=query_word) |
+                Q(name__icontains=query_word) |
+                Q(description__icontains=query_word)
+            )
+        else:
+            object_list = Room.objects.all()
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        languages = Language.objects.all()
+        room_count = self.object_list.count()
+        three_recent_msgs = Message.objects.all().order_by('-created_at')[:3]
+        context['languages'] = languages
+        context['room_count'] = room_count
+        context['three_recent_msgs'] = three_recent_msgs
+        return context
 
 
 class RoomCreateView(CreateView):
@@ -29,9 +53,20 @@ class RoomCreateView(CreateView):
         return render(request, 'room/room_create.html', {form: form})
 
 
-class RoomDetailView(DetailView):
-    model = Room
-    template_name = 'room/room_detail.html'
+def room_detail_view(request, pk):
+    room = Room.objects.get(id=pk)
+    messages = room.message_set.all()
+    languages = Language.objects.all()
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        message = form.save(commit=False)
+        message.user = request.user
+        message.room = room
+        message.save()
+        return redirect('room:detail', pk=room.id)
+    context = {'form': form, 'languages': languages,
+               'room': room, 'room_messages': messages}
+    return render(request, 'room/room_detail.html', context)
 
 
 class RoomUpdateView(UpdateView):
@@ -42,6 +77,6 @@ class RoomUpdateView(UpdateView):
 
 
 class RoomDeleteView(DeleteView):
-    model = Room 
+    model = Room
     template_name = 'room/room_delete.html'
     success_url = reverse_lazy('room:index')
