@@ -4,6 +4,7 @@ from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView
 )
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Room, Language, Message
 from .forms import RoomCreationForm, MessageForm
@@ -37,7 +38,7 @@ class RoomIndexView(ListView):
         return context
 
 
-class RoomCreateView(CreateView):
+class RoomCreateView(LoginRequiredMixin ,CreateView):
     template_name = 'room/room_create.html'
     model = Room
     form_class = RoomCreationForm
@@ -69,14 +70,14 @@ def room_detail_view(request, pk):
     return render(request, 'room/room_detail.html', context)
 
 
-class RoomUpdateView(UpdateView):
+class RoomUpdateView(LoginRequiredMixin, UpdateView):
     model = Room
     template_name = 'room/room_update.html'
     form_class = RoomCreationForm
     success_url = reverse_lazy('room:index')
 
 
-class RoomDeleteView(DeleteView):
+class RoomDeleteView(LoginRequiredMixin, DeleteView):
     model = Room
     template_name = 'room/room_delete.html'
     success_url = reverse_lazy('room:index')
