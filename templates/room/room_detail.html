@@ -12,7 +12,7 @@
         <h4 class="is-size-4">{{ room.description }}</h4>
         <p class="mt-4">{{ room.created_at }}</p>
         <hr>
-        <h5 class="is-size-5"><span class="has-text-primary">{{ message_count }}</span> 件の返信</h5>
+        <h5 class="is-size-5"><span class="has-text-primary">{{ message_count }}</span> 件のメッセージ</h5>
         {% if request.user.is_authenticated %}
             {% if room_messages.count == 0 %}
                 <h4 class="is-size-4 mb-6">まだメッセージはありません</h4>
