@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, CreateView, UpdateView, DeleteView
+    ListView, CreateView, UpdateView, DeleteView, DetailView
 )
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -57,6 +57,7 @@ class RoomCreateView(LoginRequiredMixin ,CreateView):
 def room_detail_view(request, pk):
     room = Room.objects.get(id=pk)
     messages = room.message_set.all()
+    message_count = messages.count()
     languages = Language.objects.all()
     form = MessageForm(request.POST or None)
     if form.is_valid():
@@ -66,7 +67,8 @@ def room_detail_view(request, pk):
         message.save()
         return redirect('room:detail', pk=room.id)
     context = {'form': form, 'languages': languages,
-               'room': room, 'room_messages': messages}
+               'room': room, 'room_messages': messages,
+               'message_count': message_count}
     return render(request, 'room/room_detail.html', context)
 
 
