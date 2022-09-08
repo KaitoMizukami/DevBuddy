@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered">
+    <div class="column is-two-fifths">
+        <h3 class="is-size-3 mt-4">ログイン</h3>
+        <hr>
+        <div class="has-background-link-light p-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">メールアドレス</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="field">
+                    <label class="label">パスワード</label>
+                    {{ form.password }}
+                    {{ form.password.errors}}
+                </div>
+                <div class="columns is-centered">
+                    <button class="button is-primary is-centered mt-5" type="submit" value="ログイン">ログイン</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

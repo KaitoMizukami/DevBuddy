@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered">
+    <div class="column is-two-fifths">
+        <h3 class="is-size-3 mt-4">ユーザー登録</h3>
+        <hr>
+        <div class="has-background-link-light p-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">ユーザーネーム</label>
+                    {{ form.username }}
+                </div>
+                <div class="field">
+                    <label class="label">メールアドレス</label>
+                    {{ form.email }}
+                </div>
+                <div class="field">
+                    <label class="label">パスワード</label>
+                    {{ form.password }}
+                </div>
+                <div class="field">
+                    <label class="label">確認パスワード</label>
+                    {{ form.confirm_password }}
+                </div>
+                <div class="columns is-centered">
+                    <button class="button is-primary is-centered mt-5" type="submit" value="ログイン">登録</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

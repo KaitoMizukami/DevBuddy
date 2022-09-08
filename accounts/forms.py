@@ -2,14 +2,36 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm
 
 
 User = get_user_model()
 
 
 class UserCreationForm(forms.ModelForm):
-    password = forms.CharField(label='password', widget=forms.PasswordInput)
-    confirm_password = forms.CharField(label='password再入力', widget=forms.PasswordInput)
+    password = forms.CharField(label='password', widget=forms.PasswordInput(
+        attrs={
+            'class': 'input'
+        }
+    ))
+
+    confirm_password = forms.CharField(label='password再入力', widget=forms.PasswordInput(
+        attrs={
+            'class': 'input'
+        }
+    ))
+
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': 'input'
+        }
+    ))
+
+    email = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': 'input'
+        }
+    ))
 
     class Meta:
         model = User
@@ -38,3 +60,20 @@ class UserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial['password']
+
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label='メールアドレス', widget=forms.TextInput(
+        attrs={
+            'class': 'input',
+            'placeholder': 'メールアドレス'
+        }
+    ))
+
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput(
+        attrs={
+            'class': 'input',
+            'placeholder': 'パスワード'
+        }
+    ))
+
