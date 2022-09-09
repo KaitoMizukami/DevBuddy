@@ -33,7 +33,9 @@
                     <div class="card-content">
                         <div class="content">
                             <div class="mb-3">
-                                @{{ room.host }}
+                                <a href="{% url 'accounts:profile' room.host.id %}">
+                                    @{{ room.host }}
+                                </a>
                             </div>
                             {{ room.description }}
                         </div>
@@ -53,7 +55,7 @@
         <h3 class="is-size-3">最近のメッセージ</h3>
         <hr>
         {% for recent_msg in three_recent_msgs %}
-            <a href="#" class="is-size-5">
+            <a href="{% url 'accounts:profile' recent_msg.user.id %}" class="is-size-5">
                 @{{ recent_msg.user }}
             </a>
             <article class="message is-info">

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered">
+    <div class="column is-half">
+        <h3 class="is-size-3 mt-4">{{ user.username }}</h3>
+        <hr>
+        <h3 class="is-size-4 mb-4"><span class="has-text-primary">{{ room_count }}</span> 件</h3>
+        <div class="room-container">
+            {% for user_room in user_rooms %}
+                <div class="card mb-5 has-background-white-ter">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            {{ user_room.name }}
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            <div class="mb-3">
+                                <a href="{% url 'accounts:profile' user_room.host.id %}">
+                                    @{{ user_room.host }}
+                                </a>
+                            </div>
+                            {{ user_room.description }}
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="{% url 'room:detail' user_room.id %}" class="card-footer-item">詳細</a>
+                        {% if request.user ==  user_room.host %}
+                            <a href="{% url 'room:update' user_room.id %}" class="card-footer-item">編集</a>
+                            <a href="{% url 'room:delete' user_room.id %}" class="card-footer-item">削除</a>
+                        {% endif %}
+                    </footer>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -7,7 +7,7 @@
         {% include 'room/languages.html' %}
     </div>
     <div class="column is-half">
-        <a class="is-size-3" href="">ホスト: @{{ room.host }}</a>
+        <a class="is-size-3" href="{% url 'accounts:profile' pk=room.host.id %}">ホスト: @{{ room.host }}</a>
         <h2 class="is-size-2">{{ room.name }}</h2>
         <h4 class="is-size-4">{{ room.description }}</h4>
         <p class="mt-4">{{ room.created_at }}</p>
@@ -19,7 +19,7 @@
             {% else %} 
                 <div class="msg">
                     {% for message in room_messages %}
-                        <a href="" class="is-size-5">@{{ message.user }}</a>
+                        <a href="{% url 'accounts:profile' message.user.id %}" class="is-size-5">@{{ message.user }}</a>
                         <article class="message is-dark">
                             <div class="message-body">
                                 <h5 class="is-size-5">
@@ -47,7 +47,7 @@
         <h3 class="is-size-3">ルーム参加者</h3>
         <hr>
         {% for participant in room_participants %}
-            <a href="" class="is-size-4 is-block">@{{ participant }}</a>
+            <a href="{% url 'accounts:profile' pk=participant.id %}" class="is-size-4 is-block">@{{ participant }}</a>
         {% endfor %}
     </div>
 </div>

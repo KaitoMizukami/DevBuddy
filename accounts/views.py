@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login, authenticate
-from django.views.generic import FormView, View, CreateView
+from django.views.generic import (
+    FormView, View, CreateView, DetailView
+)
 
 from .forms import UserLoginForm, UserCreationForm
+from .models import User
 
 
 class UserLoginView(FormView):
@@ -37,3 +40,16 @@ class UserRegisterView(CreateView):
             user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password'])
             login(request, user)
             return redirect('room:index')
+
+
+class UserProfile(DetailView):
+    model = User
+    template_name = 'accounts/accounts_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_rooms = context['user'].room_set.all()
+        room_count = user_rooms.count()
+        context['user_rooms'] = user_rooms
+        context['room_count'] = room_count
+        return context
