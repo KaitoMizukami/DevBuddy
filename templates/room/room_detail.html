@@ -44,6 +44,11 @@
         {% endif %}
     </div>
     <div class="column is-one-quarter">
+        <h3 class="is-size-3">ルーム参加者</h3>
+        <hr>
+        {% for participant in room_participants %}
+            <a href="" class="is-size-4 is-block">@{{ participant }}</a>
+        {% endfor %}
     </div>
 </div>
 

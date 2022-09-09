@@ -49,6 +49,7 @@ class RoomCreateView(LoginRequiredMixin ,CreateView):
             room = form.save(commit=False)
             room.host = request.user
             room.save()
+            room.participants.add(request.user)
             return redirect('room:index')
 
         return render(request, 'room/room_create.html', {form: form})
@@ -56,6 +57,7 @@ class RoomCreateView(LoginRequiredMixin ,CreateView):
 
 def room_detail_view(request, pk):
     room = Room.objects.get(id=pk)
+    room_participants = room.participants.all()
     messages = room.message_set.all()
     message_count = messages.count()
     languages = Language.objects.all()
@@ -65,10 +67,13 @@ def room_detail_view(request, pk):
         message.user = request.user
         message.room = room
         message.save()
+        if request.user not in room_participants:
+            room.participants.add(request.user)
         return redirect('room:detail', pk=room.id)
+
     context = {'form': form, 'languages': languages,
                'room': room, 'room_messages': messages,
-               'message_count': message_count}
+               'message_count': message_count, 'room_participants': room_participants}
     return render(request, 'room/room_detail.html', context)
 
 
