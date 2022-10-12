@@ -6,10 +6,14 @@ from accounts.models import User
 
 
 class UserModelTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create(username='test', email='test@mail.com', password='thisistest')
+    
     
     def setUp(self):
-        self.user = User(username='test', email='test@mail.com', password='thisistest')
-        self.user.save()
+        self.user = User.objects.get(id=1)
 
     
     def test_can_create_user_properly(self):
