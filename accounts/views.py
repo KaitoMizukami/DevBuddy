@@ -20,7 +20,7 @@ class UserLoginView(FormView):
         if user is not None:
             login(request, user)
             return redirect('room:index')
-        return redirect(('accounts:login'))
+        return redirect('accounts:login')
 
 
 class UserLogoutView(View):
