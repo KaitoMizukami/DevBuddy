@@ -3,6 +3,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.views.generic import (
     FormView, View, CreateView, DetailView
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import UserLoginForm, UserCreationForm
 from .models import User
@@ -42,7 +43,7 @@ class UserRegisterView(CreateView):
             return redirect('room:index')
 
 
-class UserProfile(DetailView):
+class UserProfile(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'accounts/accounts_profile.html'
 
