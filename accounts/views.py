@@ -16,6 +16,9 @@ class UserLoginView(FormView):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('room:index')
+        else:
+            form = UserLoginForm()
+            return render(request, 'accounts/accounts_login.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         email = request.POST['email']
