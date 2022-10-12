@@ -40,6 +40,13 @@ class UserLogoutView(View):
 class UserRegisterView(CreateView):
     template_name = 'accounts/accounts_register.html'
     form_class = UserCreationForm
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('room:index')
+        else:
+            form = UserCreationForm()
+            return render(request, 'accounts/accounts_register.html', {'form': form})
     
     def post(self, request, *args, **kwargs):
         form = UserCreationForm(request.POST)
