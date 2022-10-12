@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'room.apps.RoomConfig',
+    'coverage'
 ]
 
 MIDDLEWARE = [
