@@ -13,6 +13,10 @@ class UserLoginView(FormView):
     template_name = 'accounts/accounts_login.html'
     form_class = UserLoginForm
 
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('room:index')
+
     def post(self, request, *args, **kwargs):
         email = request.POST['email']
         password = request.POST['password']
