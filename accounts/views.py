@@ -43,7 +43,7 @@ class UserRegisterView(CreateView):
             return redirect('room:index')
 
 
-class UserProfile(LoginRequiredMixin, DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'accounts/accounts_profile.html'
 
