@@ -44,8 +44,8 @@ class UserLoginViewTest(TestCase):
     def test_redirect_login_page_if_email_or_password_wrong(self):
         response = self.client.post(reverse('accounts:login'), {
                                     'email': 'wrong@mail.com', 'password': 'wrong'}, follow=True)
-        self.assertTemplateNotUsed('room/room_index.html')
-        self.assertTemplateUsed('accounts/accounts_login.html')
+        self.assertTemplateNotUsed(response, 'room/room_index.html')
+        self.assertTemplateUsed(response, 'accounts/accounts_login.html')
 
 
 class UserLogoutViewTest(TestCase):
@@ -69,11 +69,11 @@ class UserLogoutViewTest(TestCase):
         _ = self.client.login(email='test@mail.com', password='thisistest')
         response = self.client.get(reverse('accounts:logout'), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('accounts/accounts_login.html')
+        self.assertTemplateUsed(response, 'accounts/accounts_login.html')
 
     def test_unauthenticated_user_will_redirect_to_login_page(self):
-        _ = self.client.get(reverse('accounts:logout'), follow=True)
-        self.assertTemplateUsed('accounts/accounts_login.html')
+        response = self.client.get(reverse('accounts:logout'), follow=True)
+        self.assertTemplateUsed(response, 'accounts/accounts_login.html')
 
 
 class UserRegisterViewTest(TestCase):
@@ -90,7 +90,7 @@ class UserRegisterViewTest(TestCase):
     def test_can_show_user_signup_page(self):
         response = self.client.get(reverse('accounts:signup'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('accounts/accounts_register.html')
+        self.assertTemplateUsed(response, 'accounts/accounts_register.html')
 
     def test_unauthenticated_user_cannot_enter_signup_page(self):
         _ = self.client.post(reverse('accounts:signup'), {
@@ -98,9 +98,9 @@ class UserRegisterViewTest(TestCase):
             'email': 'newuser@mail.com',
             'password': 'thisistest',
             'confirm_password': 'thisistest'})
-        _ = self.client.get(reverse('accounts:signup'), follow=True)
-        self.assertTemplateUsed('room/room_index.html')
-        self.assertTemplateNotUsed('accounts/accounts_register.html')
+        response = self.client.get(reverse('accounts:signup'), follow=True)
+        self.assertTemplateUsed(response, 'room/room_index.html')
+        self.assertTemplateNotUsed(response, 'accounts/accounts_register.html')
 
     def test_can_create_new_account(self):
         _ = self.client.post(reverse('accounts:signup'), {
@@ -113,16 +113,16 @@ class UserRegisterViewTest(TestCase):
         self.assertEqual(new_user.email, 'newuser@mail.com')
 
     def test_redirect_to_index_page_if_form_is_valid(self):
-        _ = self.client.post(reverse('accounts:signup'), {
+        response = self.client.post(reverse('accounts:signup'), {
             'username': 'newuser',
             'email': 'newuser@mail.com',
             'password': 'thisistest',
             'confirm_password': 'thisistest'}, follow=True)
-        self.assertTemplateUsed('room/room_index.html')
+        self.assertTemplateUsed(response, 'room/room_index.html')
 
     def test_redirect_to_signup_page_if_form_is_invalid(self):
-        _ = self.client.post(reverse('accounts:signup'), {}, follow=True)
-        self.assertTemplateUsed('accounts/accounts_register.html')
+        response = self.client.post(reverse('accounts:signup'), {}, follow=True)
+        self.assertTemplateUsed(response, 'accounts/accounts_register.html')
 
     def test_automatically_login_after_success_signup(self):
         _ = self.client.post(reverse('accounts:signup'), {
@@ -130,8 +130,8 @@ class UserRegisterViewTest(TestCase):
             'email': 'newuser@mail.com',
             'password': 'thisistest',
             'confirm_password': 'thisistest'})
-        _ = self.client.get(reverse('accounts:logout'), follow=True)
-        self.assertTemplateUsed('accounts/accounts_login.html')
+        response = self.client.get(reverse('accounts:logout'), follow=True)
+        self.assertTemplateUsed(response, 'accounts/accounts_login.html')
     
 
 class UserProfileViewTest(TestCase):
@@ -152,4 +152,8 @@ class UserProfileViewTest(TestCase):
         )
         response = self.client.get(reverse('accounts:profile', args=[self.user.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('accounts/accounts_profile.html')
+        self.assertTemplateUsed(response,'accounts/accounts_profile.html')
+
+    def test_unauthenticated_user_cannot_enter_user_profile_page(self):
+        response = self.client.get(reverse('accounts:profile', args=[self.user.id]), follow=True)
+        self.assertTemplateUsed(response, 'accounts/accounts_login.html')
