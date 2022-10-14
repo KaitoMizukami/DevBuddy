@@ -55,6 +55,8 @@ class UserRegisterView(CreateView):
             user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password'])
             login(request, user)
             return redirect('room:index')
+        else:
+            return redirect('accounts:signup')
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
